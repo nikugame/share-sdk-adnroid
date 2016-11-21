@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    >
+
+ <Button
+     android:id="@+id/share"
+     android:text="分享"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content" />
+
+   <!-- <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/textView" />-->
+    <!--<Button
+        android:id="@+id/QQshare"
+        android:text="QQ分享"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/QQZoneshare"
+        android:text="QQZone分享"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/wechatShare"
+        android:text="微信分享"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/wetchatFrendsShare"
+        android:text="微信朋友圈分享"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/wetchatFavoriteShare"
+        android:text="微信收藏"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+ <Button
+     android:id="@+id/weiboShare"
+     android:text="微博收藏"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content" />-->
+</LinearLayout>
