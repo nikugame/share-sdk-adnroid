@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/TanChiShe.iml" filepath="$PROJECT_DIR$/TanChiShe.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/share-sdk-adnroid.iml" filepath="$PROJECT_DIR$/share-sdk-adnroid.iml" />
     </modules>
   </component>
 </project>
