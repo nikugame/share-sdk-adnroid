@@ -3,10 +3,10 @@ package com.nikugame.tanchishe.wxapi;
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.nkgame.nksharesdk.NKConfig;
-import com.nkgame.nksharesdk.NKConstants;
-import com.nkgame.nksharesdk.NKListener;
-import com.nkgame.nksharesdk.NKLog;
+import com.nkgame.nksharesdk.NKShareConfig;
+import com.nkgame.nksharesdk.NKShareConstants;
+import com.nkgame.nksharesdk.NKShareListener;
+import com.nkgame.nksharesdk.NKShareLog;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -23,7 +23,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mApi = WXAPIFactory.createWXAPI(this, NKConfig.getInstatnce().getAppId_Wechat(), true);
+        mApi = WXAPIFactory.createWXAPI(this, NKShareConfig.getInstatnce().getAppId_Wechat(), true);
         mApi.handleIntent(this.getIntent(), this);
 
     }
@@ -39,29 +39,29 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         switch (baseResp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
                 //发送成功
-                NKLog.NKGame.e("分享成功");
-                listener.onResult(NKConstants.ResultOK,NKConstants.ShareSuccess);
+                NKShareLog.NKGame.e("分享成功");
+                listener.onResult(NKShareConstants.ResultOK,NKShareConstants.ShareSuccess);
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
-                listener.onResult(NKConstants.ResultUserCancel,NKConstants.ShareCanceled);
-                NKLog.NKGame.e("分享取消");
+                listener.onResult(NKShareConstants.ResultUserCancel,NKShareConstants.ShareCanceled);
+                NKShareLog.NKGame.e("分享取消");
                 //发送取消
                 break;
             case BaseResp.ErrCode.ERR_AUTH_DENIED:
                 //发送被拒绝
-                NKLog.NKGame.e("认证被拒绝");
-               listener.onResult(NKConstants.ResultUnknownError,NKConstants.SharetFailed);
+                NKShareLog.NKGame.e("认证被拒绝");
+               listener.onResult(NKShareConstants.ResultUnknownError,NKShareConstants.SharetFailed);
                 break;
             default:
                 //发送返回
-                NKLog.NKGame.e("分享返回");
-                listener.onResult(NKConstants.ResultUnknownError,NKConstants.SharetFailed);
+                NKShareLog.NKGame.e("分享返回");
+                listener.onResult(NKShareConstants.ResultUnknownError,NKShareConstants.SharetFailed);
 
                 break;
         }
         finish();
     }
-    private class MyListener implements NKListener {
+    private class MyListener implements NKShareListener {
 
         @Override
         public void onInit(int errorCode, String result) {
@@ -70,7 +70,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
         @Override
         public void onResult(int errorCode, String result) {
-            NKLog.NKGame.e("errorCode:  "+errorCode+"  ,result:  "+result);
+            NKShareLog.NKGame.e("errorCode:  "+errorCode+"  ,result:  "+result);
 //            WXEntryActivity.this.finish();
         }
 

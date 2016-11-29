@@ -1,4 +1,4 @@
-#[ShareSDK接入文档](https://github.com/nikugame/share-sdk-adnroid/blob/master/README.md)
+#[ShareSDK接入文档](https://github.com/nikugame/share-sdk-adnroid/blob/master/README.md)（ver1.0.1_1129）
 
  [NKShareSDK](https://github.com/nikugame/share-sdk-adnroid)目前集成了QQ、微信、微博等平台的分享，可以帮您的应用快速接入多平台的分享。
 
@@ -72,24 +72,25 @@
             />
 ```
 ##3、SDK接口描述
-###（1）初始化实例
+###（1）初始化实例（必接）
 ```
     NKShareSDK nkShareSDK =NKShareSDK.getInstance();
     nkShareSDK.init(this);
 ```
 说明：需要在调起分享的Activity的OnCreate方法中执行。
-###（2）初始化渠道
+###（2）初始化渠道（必接）
+####<1>带分享结果回调接口
 ```
-    nkShareSDK.init（String channel，NKListener nkListener）;
+    nkShareSDK.init（String channel，NKShareListener nkListener）;
 ```
 说明：
-####<1>channel代表初始化的渠道，渠道可从NKConstants中选择NKChannel,如：
+#####①channel代表初始化的渠道，渠道可从NKShareConstants中选择NKChannel,如：
 ```
-   nkShareSDK.init(NKConstants.NKChannel_QQ,new MyListener());
+   nkShareSDK.init(NKShareConstants.NKChannel_QQ,new MyListener());
 ```
-####<2>NKListener是监听分享返回接口。
+#####②NKListener是监听分享返回接口。
 ```
-   private class MyListener implements NKListener {
+   private class MyListener implements NKShareListener {
 
         @Override
         public void onInit(int errorCode, String result) {
@@ -99,12 +100,12 @@
         @Override
         public void onResult(int errorCode, String result) {
             //分享结果
-            NKLog.NKGame.e("errorCode:  "+errorCode+"  ,result:  "+result);
+            NKShareLog.NKGame.e("errorCode:  "+errorCode+"  ,result:  "+result);
         }
 
         @Override
         public void onAuth(int errorCode, String result) {
-            //注册或认证结果
+            //注册或认证结果，暂时不可用
         }
     }
 ```
@@ -113,17 +114,21 @@
 | --------   | -----:  | :----:  |
 | errcode     | int |   正常返回0，错误返回-1，取消返回1    |
 | result        |   String   |   具体的消息   |
-**注意**：目前部分渠道在分享后不会返回分享结果，因此可能造成这些渠道无法监听到分享结果
-
-###（3）设置分享类型
+**注意**：目前部分渠道在分享后不会返回分享结果，因此可能造成这些渠道无法监听到分享结果，请评估后选择接入
+####<2>不带分享结果回调接口
+```
+    nkShareSDK.init（String channel）;
+```
+说明：直接初始化渠道
+###（3）设置分享类型（必接）
 ```
    nkShareSDK.setShareType（int shareType）;
 ```
-说明：shareType分享类型，可在NKConstans中选择shareType,包含文本（text）、图片（image）、音频（music）、视频（video）、网页（webpage），如：
+说明：shareType分享类型，可在NKShareConstans中选择NKSHARE_TYPE_,包含文本（text）、图片（image）、音频（music）、视频（video）、网页（webpage），如：
 ```
-   nkShareSDK.setShareType(NKConstans.shareType_text);
+   nkShareSDK.setShareType(NKShareConstans.NKSHARE_TYPE_TEXT);
 ```
-###（4）设置标题或名称
+###（4）设置标题或名称（必接）
 ```
    nkShareSDK.setTitle(String title);
 ```
@@ -131,7 +136,7 @@
 ```
     nkShareSDK.setTitle("Test");
 ```
-###（5）设置链接地址
+###（5）设置链接地址（必接）
 ```
    nkShareSDK.setTargetUrl(String url);
 ```
@@ -141,18 +146,48 @@
    nkShareSDK.setImageUrl(String path);
 ```
 说明：path可传递路径、网络链接等，目前仅支持本地链接及应用内图片。
-###（7）设置分享具体内容
+###（7）设置分享具体内容（必接）
 ```
     nkShareSDK.setText(String text);
 ```
-###（8）设置分享渠道并分享
+###（8）设置分享渠道并分享（必接）
 ```
     nkShareSDK.showShare(String channel);
 ```
-###（9）设置分享渠道并分享
+###（9）生成二维码并分享
+说明：使用此方法不用再接入showShare方法了。
+<1>使用游戏包内资源的图片
 ```
-    nkShareSDK.showShare(String channel);
+nkShareSDK.showShareWithQRCode(String channel,String url, String uuid, String gameid,int widthPix,int heightPix,int logoId, Activity activity)
 ```
+说明：
+| 参数        | 类型   |  说明  |
+| --------   | -----:  | :----:  |
+| channel     | String |   渠道    |
+| url       |   String   |   二维码中链接主地址，http://game.nikugame.com/qrdownload   |
+| uuid     | String |   二维码中链接中分享用户id    |
+| gameid     | String |   二维码中链接中分享游戏id    |
+| widthPix     | int |   分享二维码的宽，单位像素    |
+| heightPix     | int |   分享二维码的高，单位像素    |
+| logoId     | int |   二维码中logo的图片在R.class中的id    |
+| activity     | Activity |   当前的Activity    |
+url、uuid、gameid组成的二维码链接地址形式为：http://game.nikugame.com/qrdownload?uuid=?&gameid=?
+<2>使用资源路径的图片
+```
+nkShareSDK.showShareWithQRCode(String channel,String url, String uuid, String gameid,int widthPix,int heightPix,String imagePath, Activity activity)
+```
+说明：
+| 参数        | 类型   |  说明  |
+| --------   | -----:  | :----:  |
+| channel     | String |   渠道    |
+| url       |   String   |   二维码中链接地址，http://game.nikugame.com/qrdownload   |
+| uuid     | String |   分享用户id    |
+| gameid     | String |   分享游戏id    |
+| widthPix     | int |   分享二维码的宽，单位像素    |
+| heightPix     | int |   分享二维码的高，单位像素    |
+| imagePath     | String |   二维码中logo的图片所在路径    |
+| activity     | Activity |   当前的Activity    |
+url、uuid、gameid组成的二维码链接地址形式为：http://game.nikugame.com/qrdownload?uuid=?&gameid=?
 ###（10）添加生命周期
 ```
     public void onCreate(Bundle savedInstanceState) {
@@ -165,6 +200,36 @@
         super.onNewIntent(intent);
         nkShareSDK.onNewIntent(intent);
     }
+
+    public void onStop() {
+         super.onStop();
+        nkShareSDK.onStop();
+    }
+
+    public void onDestroy() {
+         super.onDestroy();
+        nkShareSDK.onDestroy();
+    }
+
+    public void onResume() {
+         super.onResume();
+        nkShareSDK.onResume();
+    }
+
+    public void onPause() {
+        super.onPause();
+        nkShareSDK.onPause();
+    }
+
+    public void onStart() {
+         super.onStart();
+        nkShareSDK.onStart();
+    }
+
+    public void onRestart() {
+        super.onRestart();
+        nkShareSDK.onRestart();
+    }
 ```
 
 ##4、分享结果示例
@@ -173,8 +238,12 @@
 ##5、问题说明
 1、初始化可能因机器的不同而导致时间上的差异，请点击后耐心等待几秒钟，不要急切多点击几次，而导致程序反应滞后，此问题会在后期版本中优化
 2、Demo中的图片为本地路径图片，要想运行必须更改为测试手机内的图片。
-3、微信限制分享图片的格式是png，图片的大小规格也有一定的限制
+3、微信分享图片的大小规格有一定的限制
 
 ##6、版本更新说明
 ver1.0.0.1121
 首个ShareSDK版本，增加了QQ、微信、微博渠道的分享，及分享结果的接口
+ver1.0.0.1128
+新增生成二维码并分享接口，新增微信分享图片处理方法，新增生命周期
+ver1.0.0.1129
+调整类名规则，防止与其他SDK产生混淆
